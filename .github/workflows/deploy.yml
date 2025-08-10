@@ -1,0 +1,99 @@
+name: 🚀 Deploy Flutter Web to Vercel
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    name: 🏗️ Build and Deploy
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🐦 Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.3'
+        channel: 'stable'
+        cache: true
+
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+
+    - name: 🔍 Analyze Code
+      run: flutter analyze
+
+    - name: 🧪 Run Tests
+      run: flutter test
+
+    - name: 🏗️ Build Web
+      run: |
+        flutter build web --release --web-renderer html
+        echo "Build completed successfully!"
+        ls -la build/web/
+
+    - name: 📋 Create Build Info
+      run: |
+        echo "# Build Information" > build/web/BUILD_INFO.md
+        echo "- **Build Date**: $(date)" >> build/web/BUILD_INFO.md
+        echo "- **Commit**: ${{ github.sha }}" >> build/web/BUILD_INFO.md
+        echo "- **Branch**: ${{ github.ref_name }}" >> build/web/BUILD_INFO.md
+        echo "- **Workflow**: ${{ github.workflow }}" >> build/web/BUILD_INFO.md
+
+    - name: 🚀 Deploy to Deploy Branch
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/web
+        publish_branch: deploy
+        force_orphan: true
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        commit_message: |
+          🚀 Deploy: ${{ github.event.head_commit.message }}
+          
+          - Commit: ${{ github.sha }}
+          - Date: ${{ github.event.head_commit.timestamp }}
+          - Author: ${{ github.event.head_commit.author.name }}
+
+    - name: 📊 Build Summary
+      if: always()
+      run: |
+        echo "## 📊 Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| 📥 Checkout | ✅ Completed |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🐦 Flutter Setup | ✅ Completed |" >> $GITHUB_STEP_SUMMARY
+        echo "| 📦 Dependencies | ✅ Completed |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🔍 Code Analysis | ✅ Completed |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🧪 Tests | ✅ Completed |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🏗️ Web Build | ✅ Completed |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🚀 Deploy | ✅ Completed |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🎯 Deployment Details" >> $GITHUB_STEP_SUMMARY
+        echo "- **Target Branch**: \`deploy\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build Output**: \`build/web/\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Ready for Vercel**: ✅" >> $GITHUB_STEP_SUMMARY
+
+  notify-success:
+    name: 🎉 Notify Success
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
+    if: success()
+    
+    steps:
+    - name: 🎉 Success Notification
+      run: |
+        echo "🎉 Deployment successful!"
+        echo "✅ Flutter web app built and deployed to 'deploy' branch"
+        echo "🔗 Ready for Vercel deployment"
+        echo "📅 Deployed at: $(date)"

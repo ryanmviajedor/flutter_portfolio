@@ -163,17 +163,29 @@ Update personal information in each section widget:
 
 ## 🌐 Deployment
 
-### **GitHub Pages**
+### **🚀 Automated Deployment (Recommended)**
+This project includes **GitHub Actions** for automatic deployment to Vercel:
+
+1. **Push to main branch** → Triggers automatic build
+2. **GitHub Actions** builds Flutter web app
+3. **Deploy branch** receives the build output
+4. **Vercel** automatically deploys from deploy branch
+
+**Setup**: See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
+
+### **Manual Deployment Options**
+
+#### **GitHub Pages**
 1. Enable GitHub Pages in repository settings
 2. Build the project: `flutter build web`
 3. Deploy the `build/web` folder
 
-### **Netlify**
+#### **Netlify**
 1. Connect your GitHub repository
 2. Set build command: `flutter build web`
 3. Set publish directory: `build/web`
 
-### **Vercel**
+#### **Vercel (Manual)**
 1. Import your GitHub repository
 2. Framework preset: Other
 3. Build command: `flutter build web`
