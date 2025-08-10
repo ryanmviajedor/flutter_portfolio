@@ -126,7 +126,6 @@ class _NavButton extends StatefulWidget {
     required this.path,
     required this.isActive,
     required this.onTap,
-    super.key,
   });
 
   @override

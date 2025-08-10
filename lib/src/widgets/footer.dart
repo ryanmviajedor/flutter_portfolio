@@ -36,7 +36,7 @@ class FooterSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.muted,
         border: Border(
-          top: BorderSide(color: AppColors.primary.withOpacity(0.2), width: 1),
+          top: BorderSide(color: AppColors.primary.withValues(alpha: 0.2), width: 1),
         ),
       ),
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
@@ -74,7 +74,7 @@ class FooterSection extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       width: 1,
                     ),
                   ),

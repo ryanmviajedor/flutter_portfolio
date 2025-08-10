@@ -387,7 +387,7 @@ class _SkillsSectionState extends State<SkillsSection>
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(
+              color: Colors.black.withValues(alpha: 
                 _isSkillCardHovered[index] ? 0.2 : 0.1,
               ),
               blurRadius: _isSkillCardHovered[index] ? 20 : 10,
@@ -410,7 +410,7 @@ class _SkillsSectionState extends State<SkillsSection>
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Icon(skill['icon'], color: AppColors.primary, size: 24),
@@ -454,7 +454,7 @@ class _SkillsSectionState extends State<SkillsSection>
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(6),
           ),
           child: Icon(skill['icon'], color: AppColors.primary, size: 20),

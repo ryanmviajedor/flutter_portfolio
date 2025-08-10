@@ -270,12 +270,12 @@ class _HeroSectionState extends State<HeroSection>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(160),
           border: Border.all(
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
             width: 4,
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.2),
+              color: AppColors.primary.withValues(alpha: 0.2),
               blurRadius: 20,
               spreadRadius: 5,
             ),
@@ -346,7 +346,7 @@ class _HeroSectionState extends State<HeroSection>
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.mutedForeground.withOpacity(0.1),
+            color: AppColors.mutedForeground.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(link['icon'], color: AppColors.mutedForeground, size: 24),
@@ -372,7 +372,7 @@ class _AnimatedShapesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.primary.withOpacity(0.1)
+      ..color = AppColors.primary.withValues(alpha: 0.1)
       ..style = PaintingStyle.fill;
 
     // Draw some animated shapes

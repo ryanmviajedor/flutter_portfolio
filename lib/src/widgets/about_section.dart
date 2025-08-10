@@ -226,7 +226,7 @@ class _AboutSectionState extends State<AboutSection>
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(_isLeftCardHovered ? 0.2 : 0.1),
+              color: Colors.black.withValues(alpha: _isLeftCardHovered ? 0.2 : 0.1),
               blurRadius: _isLeftCardHovered ? 20 : 10,
               offset: Offset(0, _isLeftCardHovered ? 8 : 4),
             ),
@@ -356,7 +356,7 @@ class _AboutSectionState extends State<AboutSection>
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(_isRightCardHovered ? 0.2 : 0.1),
+              color: Colors.black.withValues(alpha: _isRightCardHovered ? 0.2 : 0.1),
               blurRadius: _isRightCardHovered ? 20 : 10,
               offset: Offset(0, _isRightCardHovered ? 8 : 4),
             ),
@@ -400,7 +400,7 @@ class _AboutSectionState extends State<AboutSection>
                           Container(
                             width: 2,
                             height: 60,
-                            color: AppColors.primary.withOpacity(0.3),
+                            color: AppColors.primary.withValues(alpha: 0.3),
                           ),
                       ],
                     ),
@@ -472,7 +472,7 @@ class _AboutSectionState extends State<AboutSection>
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(
+                    color: Colors.black.withValues(alpha: 
                       _isStatCardHovered[index] ? 0.2 : 0.1,
                     ),
                     blurRadius: _isStatCardHovered[index] ? 20 : 10,
@@ -560,7 +560,7 @@ class _AboutSectionState extends State<AboutSection>
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(
+                      color: Colors.black.withValues(alpha: 
                         _isServiceCardHovered[index] ? 0.2 : 0.1,
                       ),
                       blurRadius: _isServiceCardHovered[index] ? 20 : 10,
