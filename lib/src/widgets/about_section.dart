@@ -110,11 +110,11 @@ class _AboutSectionState extends State<AboutSection>
 
     _slideAnimation =
         Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
-          CurvedAnimation(
-            parent: _animationController,
-            curve: Curves.easeOutCubic,
-          ),
-        );
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
   }
 
   @override
@@ -226,7 +226,8 @@ class _AboutSectionState extends State<AboutSection>
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: _isLeftCardHovered ? 0.2 : 0.1),
+              color: Colors.black
+                  .withValues(alpha: _isLeftCardHovered ? 0.2 : 0.1),
               blurRadius: _isLeftCardHovered ? 20 : 10,
               offset: Offset(0, _isLeftCardHovered ? 8 : 4),
             ),
@@ -356,7 +357,8 @@ class _AboutSectionState extends State<AboutSection>
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: _isRightCardHovered ? 0.2 : 0.1),
+              color: Colors.black
+                  .withValues(alpha: _isRightCardHovered ? 0.2 : 0.1),
               blurRadius: _isRightCardHovered ? 20 : 10,
               offset: Offset(0, _isRightCardHovered ? 8 : 4),
             ),
@@ -451,60 +453,82 @@ class _AboutSectionState extends State<AboutSection>
   }
 
   Widget _buildStatsSection() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: _stats.asMap().entries.map((entry) {
-        final index = entry.key;
-        final stat = entry.value;
-        return Expanded(
-          child: MouseRegion(
-            onEnter: (_) => setState(() => _isStatCardHovered[index] = true),
-            onExit: (_) => setState(() => _isStatCardHovered[index] = false),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              padding: const EdgeInsets.all(24),
-              transform: _isStatCardHovered[index]
-                  ? Matrix4.translationValues(0, -8, 0)
-                  : Matrix4.identity(),
-              decoration: BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 
-                      _isStatCardHovered[index] ? 0.2 : 0.1,
-                    ),
-                    blurRadius: _isStatCardHovered[index] ? 20 : 10,
-                    offset: Offset(0, _isStatCardHovered[index] ? 8 : 4),
-                  ),
-                ],
+    final width = MediaQuery.of(context).size.width;
+    final isWide = width > 768;
+
+    if (isWide) {
+      // Desktop: Row layout
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: _stats.asMap().entries.map((entry) {
+          final index = entry.key;
+          final stat = entry.value;
+          return Expanded(
+            child: _buildStatCard(index, stat),
+          );
+        }).toList(),
+      );
+    } else {
+      // Mobile: Column layout
+      return Column(
+        children: _stats.asMap().entries.map((entry) {
+          final index = entry.key;
+          final stat = entry.value;
+          return Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            child: _buildStatCard(index, stat),
+          );
+        }).toList(),
+      );
+    }
+  }
+
+  Widget _buildStatCard(int index, Map<String, String> stat) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isStatCardHovered[index] = true),
+      onExit: (_) => setState(() => _isStatCardHovered[index] = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.all(24),
+        transform: _isStatCardHovered[index]
+            ? Matrix4.translationValues(0, -8, 0)
+            : Matrix4.identity(),
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(
+                alpha: _isStatCardHovered[index] ? 0.2 : 0.1,
               ),
-              child: Column(
-                children: [
-                  GradientText(
-                    '${stat['number']}+',
-                    style: const TextStyle(
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    stat['label']!,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: AppColors.mutedForeground,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              blurRadius: _isStatCardHovered[index] ? 20 : 10,
+              offset: Offset(0, _isStatCardHovered[index] ? 8 : 4),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            GradientText(
+              '${stat['number']}+',
+              style: const TextStyle(
+                fontSize: 48,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-        );
-      }).toList(),
+            const SizedBox(height: 8),
+            Text(
+              stat['label']!,
+              style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.mutedForeground,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -532,69 +556,87 @@ class _AboutSectionState extends State<AboutSection>
         const SizedBox(height: 32),
 
         // Services grid
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: MediaQuery.of(context).size.width > 768 ? 4 : 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.8,
-          ),
-          itemCount: _services.length,
-          itemBuilder: (context, index) {
-            final service = _services[index];
-            return MouseRegion(
-              onEnter: (_) =>
-                  setState(() => _isServiceCardHovered[index] = true),
-              onExit: (_) =>
-                  setState(() => _isServiceCardHovered[index] = false),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.all(24),
-                transform: _isServiceCardHovered[index]
-                    ? Matrix4.translationValues(0, -8, 0)
-                    : Matrix4.identity(),
-                decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 
-                        _isServiceCardHovered[index] ? 0.2 : 0.1,
-                      ),
-                      blurRadius: _isServiceCardHovered[index] ? 20 : 10,
-                      offset: Offset(0, _isServiceCardHovered[index] ? 8 : 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(service['icon'], color: AppColors.primary, size: 48),
-                    const SizedBox(height: 16),
-                    Text(
-                      service['title'],
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.foreground,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      service['description'],
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: AppColors.mutedForeground,
-                        height: 1.4,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final isWide = width > 768;
+            final crossAxisCount = isWide ? 4 : 2;
+            final childAspectRatio = isWide ? 0.8 : 1.0;
+
+            return GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: childAspectRatio,
               ),
+              itemCount: _services.length,
+              itemBuilder: (context, index) {
+                final service = _services[index];
+                return MouseRegion(
+                  onEnter: (_) =>
+                      setState(() => _isServiceCardHovered[index] = true),
+                  onExit: (_) =>
+                      setState(() => _isServiceCardHovered[index] = false),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    padding: EdgeInsets.all(isWide ? 24 : 16),
+                    transform: _isServiceCardHovered[index]
+                        ? Matrix4.translationValues(0, -8, 0)
+                        : Matrix4.identity(),
+                    decoration: BoxDecoration(
+                      color: AppColors.background,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(
+                            alpha: _isServiceCardHovered[index] ? 0.2 : 0.1,
+                          ),
+                          blurRadius: _isServiceCardHovered[index] ? 20 : 10,
+                          offset:
+                              Offset(0, _isServiceCardHovered[index] ? 8 : 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          service['icon'],
+                          color: AppColors.primary,
+                          size: isWide ? 48 : 36,
+                        ),
+                        SizedBox(height: isWide ? 16 : 12),
+                        Text(
+                          service['title'],
+                          style: TextStyle(
+                            fontSize: isWide ? 18 : 16,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.foreground,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: isWide ? 8 : 6),
+                        Flexible(
+                          child: Text(
+                            service['description'],
+                            style: TextStyle(
+                              fontSize: isWide ? 14 : 12,
+                              color: AppColors.mutedForeground,
+                              height: 1.4,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: isWide ? null : 4,
+                            overflow: isWide ? null : TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             );
           },
         ),
