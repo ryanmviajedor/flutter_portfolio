@@ -16,9 +16,8 @@ class _NavBarState extends State<NavBar> {
   final List<Map<String, String>> _navItems = [
     {'name': 'Home', 'path': 'home'},
     {'name': 'About', 'path': 'about'},
-    {'name': 'Testimonials', 'path': 'testimonials'},
-    {'name': 'Packages', 'path': 'packages'},
-    {'name': 'Blog', 'path': 'blog'},
+    {'name': 'Skills', 'path': 'skills'},
+    {'name': 'Projects', 'path': 'projects'},
     {'name': 'Contact', 'path': 'contact'},
   ];
 
@@ -110,8 +109,33 @@ class _NavBarState extends State<NavBar> {
       _isMenuOpen = false;
     });
 
-    // TODO: Implement actual scrolling to section
-    // This would typically use a ScrollController or GlobalKeys
+    // Scroll to the section using approximate positions
+    final scrollController = Scrollable.of(context);
+    double targetPosition = 0;
+
+    switch (section) {
+      case 'home':
+        targetPosition = 0;
+        break;
+      case 'about':
+        targetPosition = 800; // Approximate position after hero section
+        break;
+      case 'skills':
+        targetPosition = 1600; // Approximate position after about section
+        break;
+      case 'projects':
+        targetPosition = 2400; // Approximate position after skills section
+        break;
+      case 'contact':
+        targetPosition = 3200; // Approximate position after projects section
+        break;
+    }
+
+    scrollController.position.animateTo(
+      targetPosition,
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.easeInOut,
+    );
   }
 }
 
