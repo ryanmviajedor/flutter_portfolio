@@ -163,13 +163,13 @@ Update personal information in each section widget:
 
 ## 🌐 Deployment
 
-### **🚀 Automated Deployment (Recommended)**
-This project includes **GitHub Actions** for automatic deployment to Vercel:
+### **🚀 Automated Deployment (GitHub Pages)**
+This project includes **GitHub Actions** for automatic deployment to GitHub Pages:
 
 1. **Push to main branch** → Triggers automatic build
 2. **GitHub Actions** builds Flutter web app
-3. **Deploy branch** receives the build output
-4. **Vercel** automatically deploys from deploy branch
+3. **GitHub Pages** deploys the built app automatically
+4. **Live website** available at: https://ryanmviajedor.github.io/flutter_portfolio/
 
 **Setup**: See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 

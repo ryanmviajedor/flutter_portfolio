@@ -1,23 +1,22 @@
 # 🚀 Deployment Guide
 
-This guide explains how to deploy your Flutter Portfolio to Vercel using GitHub Actions.
+This guide explains how to deploy your Flutter Portfolio to GitHub Pages using GitHub Actions.
 
 ## 🔄 Automated Deployment Workflow
 
 ### How It Works
 1. **Push to main branch** triggers the GitHub Action
 2. **Flutter web build** is created automatically
-3. **Build output** is pushed to `deploy` branch
-4. **Vercel** deploys from the `deploy` branch
+3. **Build output** is deployed directly to GitHub Pages
+4. **Live website** is available at your GitHub Pages URL
 
 ### Workflow Steps
 ```mermaid
 graph LR
     A[Push to main] --> B[GitHub Actions]
     B --> C[Flutter Build]
-    C --> D[Deploy Branch]
-    D --> E[Vercel Deploy]
-    E --> F[Live Website]
+    C --> D[GitHub Pages]
+    D --> E[Live Website]
 ```
 
 ## 🛠️ Setup Instructions
