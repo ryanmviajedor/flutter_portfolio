@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
 
 class AboutSection extends StatefulWidget {
   const AboutSection({super.key});
@@ -645,12 +647,18 @@ class _AboutSectionState extends State<AboutSection>
   }
 
   void _launchUrl(String url) {
-    // TODO: Implement URL launching
-    debugPrint('Launching URL: $url');
+    // Open URL in new tab/window
+    debugPrint('Opening URL: $url');
+    html.window.open(url, '_blank');
   }
 
   void _scrollToContact() {
-    // TODO: Implement scroll to contact section
-    debugPrint('Scrolling to contact section');
+    // Scroll to contact section
+    final scrollController = Scrollable.of(context);
+    scrollController.position.animateTo(
+      3200, // Approximate position of contact section
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.easeInOut,
+    );
   }
 }

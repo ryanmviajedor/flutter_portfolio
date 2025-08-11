@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -19,7 +21,7 @@ class _ContactSectionState extends State<ContactSection>
 
   // Personal details
   final String _cvUrl =
-      'https://drive.google.com/file/d/1ZcpXka01BQz6Rd1cyQtV9SqcegH5hh3l/view?usp=sharing';
+      'https://drive.google.com/file/d/1XnkD_3Ng1DzUYNjkK9YpzKudKuiGKHPz/view';
 
   // Contact information
   final List<Map<String, dynamic>> _contactInfo = [
@@ -69,11 +71,11 @@ class _ContactSectionState extends State<ContactSection>
 
     _slideAnimation =
         Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
-          CurvedAnimation(
-            parent: _animationController,
-            curve: Curves.easeOutCubic,
-          ),
-        );
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
   }
 
   @override
@@ -166,8 +168,8 @@ class _ContactSectionState extends State<ContactSection>
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 
-                            _isContactCardHovered ? 0.2 : 0.1,
+                          color: Colors.black.withValues(
+                            alpha: _isContactCardHovered ? 0.2 : 0.1,
                           ),
                           blurRadius: _isContactCardHovered ? 20 : 10,
                           offset: Offset(0, _isContactCardHovered ? 8 : 4),
@@ -290,7 +292,6 @@ class _ContactSectionState extends State<ContactSection>
                 ),
               ),
               const SizedBox(height: 4),
-
               if (info['title'] == 'Social Profiles')
                 // Social links
                 Row(
@@ -343,7 +344,8 @@ class _ContactSectionState extends State<ContactSection>
   }
 
   void _launchUrl(String url) {
-    // TODO: Implement URL launching
-    debugPrint('Launching URL: $url');
+    // Open URL in new tab/window
+    debugPrint('Opening URL: $url');
+    html.window.open(url, '_blank');
   }
 }
