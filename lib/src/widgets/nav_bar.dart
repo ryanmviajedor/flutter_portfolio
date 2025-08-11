@@ -36,70 +36,130 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     final isWide = MediaQuery.of(context).size.width > 768;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: _isScrolled
-            ? AppColors.background.withValues(alpha: 0.9)
-            : AppColors.background.withValues(alpha: 0.8),
-        boxShadow: _isScrolled
-            ? [
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: _isScrolled
+                ? AppColors.background.withValues(alpha: 0.9)
+                : AppColors.background.withValues(alpha: 0.8),
+            boxShadow: _isScrolled
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Logo/Brand
+                GestureDetector(
+                  onTap: () => _scrollToSection('home'),
+                  child: const Text(
+                    'Ryan',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.foreground,
+                    ),
+                  ),
+                ),
+
+                // Desktop Navigation
+                if (isWide)
+                  Row(
+                    children: _navItems.map((item) {
+                      final isActive = _activeSection == item['path'];
+                      return _NavButton(
+                        label: item['name']!,
+                        path: item['path']!,
+                        isActive: isActive,
+                        onTap: () => _scrollToSection(item['path']!),
+                      );
+                    }).toList(),
+                  )
+                else
+                  // Mobile Menu Button
+                  IconButton(
+                    icon: Icon(
+                      _isMenuOpen ? Icons.close : Icons.menu,
+                      color: AppColors.foreground,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isMenuOpen = !_isMenuOpen;
+                      });
+                    },
+                  ),
+              ],
+            ),
+          ),
+        ),
+
+        // Mobile Menu
+        if (!isWide && _isMenuOpen)
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            decoration: BoxDecoration(
+              color: AppColors.background.withValues(alpha: 0.95),
+              boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
-              ]
-            : null,
-      ),
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 1200),
-        margin: const EdgeInsets.symmetric(horizontal: 24),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Logo/Brand
-            GestureDetector(
-              onTap: () => _scrollToSection('home'),
-              child: const Text(
-                'Ryan',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.foreground,
-                ),
-              ),
+              ],
             ),
-
-            // Desktop Navigation
-            if (isWide)
-              Row(
-                children: _navItems.map((item) {
-                  final isActive = _activeSection == item['path'];
-                  return _NavButton(
-                    label: item['name']!,
-                    path: item['path']!,
-                    isActive: isActive,
-                    onTap: () => _scrollToSection(item['path']!),
-                  );
-                }).toList(),
-              )
-            else
-              // Mobile Menu Button
-              IconButton(
-                icon: Icon(
-                  _isMenuOpen ? Icons.close : Icons.menu,
-                  color: AppColors.foreground,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _isMenuOpen = !_isMenuOpen;
-                  });
-                },
-              ),
-          ],
-        ),
-      ),
+            child: Column(
+              children: _navItems.map((item) {
+                final isActive = _activeSection == item['path'];
+                return Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: AppColors.border.withValues(alpha: 0.2),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => _scrollToSection(item['path']!),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        child: Text(
+                          item['name']!,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight:
+                                isActive ? FontWeight.w600 : FontWeight.w400,
+                            color: isActive
+                                ? AppColors.primary
+                                : AppColors.foreground,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+      ],
     );
   }
 
