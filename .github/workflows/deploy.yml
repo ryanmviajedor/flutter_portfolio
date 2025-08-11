@@ -40,7 +40,7 @@ jobs:
 
     - name: 🏗️ Build Web
       run: |
-        flutter build web --release --base-href /flutter_portfolio/
+        flutter build web --release
         echo "Build completed successfully!"
         ls -la build/web/
 
