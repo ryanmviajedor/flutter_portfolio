@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    The value below is injected by flutter build, do not touch.
+  -->
+  <base href="/flutter_portfolio/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Ryan Viajedor - Flutter Developer Portfolio">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Portfolio">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Ryan Viajedor - Flutter Developer Portfolio</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    const serviceWorkerVersion = "3778050613";
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+  <style>
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .loading-text {
+      text-align: center;
+    }
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top: 4px solid white;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading">
+    <div class="loading-text">
+      <div class="spinner"></div>
+      <h2>Loading Portfolio...</h2>
+      <p>Ryan Viajedor - Flutter Developer</p>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('load', function(ev) {
+      console.log('Page loaded, initializing Flutter...');
+      console.log('_flutter available:', typeof _flutter);
+
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          console.log('Flutter entrypoint loaded, initializing engine...');
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            console.log('Flutter engine initialized, running app...');
+            appRunner.runApp();
+            console.log('Flutter app started!');
+            // Hide loading indicator
+            document.getElementById('loading').style.display = 'none';
+          }).catch(function(error) {
+            console.error('Flutter engine initialization failed:', error);
+          });
+        }
+      }).catch(function(error) {
+        console.error('Flutter entrypoint loading failed:', error);
+      });
+    });
+  </script>
+</body>
+</html>
